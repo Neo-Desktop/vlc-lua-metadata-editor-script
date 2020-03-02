@@ -52,7 +52,8 @@ function MetaClass:New(filename)
     self.DisplayChapters = {}
     self.Dirty = false
     self.metadata = vlc.input.item():metas() or { }
-    self.path = uri_to_path(vlc.input.item():uri())
+    self.uri = vlc.input.item():uri()
+    self.path = uri_to_path(self.uri)
     self.duration = vlc.input.item():duration() * VLC_TIMEBASE
     self:WalkChapters()
     self:SetDirty(true)
@@ -205,7 +206,7 @@ end
 
 function click_Save()
   if not CURRENT_FILE then return nil end
-  
+
   CURRENT_FILE.metadata["title"] = w2:get_text()
   CURRENT_FILE:Write()
 end
